@@ -154,11 +154,19 @@ El primer mensaje Destruyendo Maquina después de Fin de main corresponde a la F
 
 a) Copia los mensajes de error y explica con tus palabras qué dice cada uno.
 
-[Inserta aquí tu respuesta]
+Error 1: Pulidora
+error: cannot declare variable 'pulidora' to be of abstract type 'Pulidora'
+
+La clase Pulidora no implementa el método virtual puro procesar() que hereda de Maquina. Por eso, el compilador no permite crear un objeto de esta clase.
+
+Error 2: Maquina genérica
+error: cannot declare variable 'generica' to be of abstract type 'Maquina'
+
+La clase Maquina ahora es abstracta porque tiene dos métodos virtuales puros: procesar() y tiempoCicloSeg(). Por lo tanto, no podemos crear objetos directamente de ella.
 
 b) ¿Por qué es mejor este error de compilación que el comportamiento "generico" de antes?
 
-[Inserta aquí tu respuesta]
+Es mejor que ocurra un error de compilación porque nos permite detectar desde el principio que una clase derivada no implementó los métodos necesarios. Antes, la máquina podía utilizar el procesamiento genérico aunque no realizara una función específica, lo que podía generar resultados incorrectos. Al convertir Maquina en una clase abstracta, el compilador obliga a que cada máquina implemente su propio comportamiento antes de permitir que se creen sus objetos.
 
 <br>
 
