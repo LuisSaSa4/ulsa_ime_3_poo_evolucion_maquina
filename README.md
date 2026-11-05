@@ -92,7 +92,9 @@ La máquina se creó automáticamente mediante una conversión implícita. Como 
 
 c) ¿Qué tuviste que cambiar en `Torno` y `Fresadora` y por qué?
 
-[Inserta aquí tu respuesta]
+Tuve que modificar las clases Torno y Fresadora para que dejaran de acceder directamente a los atributos de la clase Maquina. En su lugar, utilicé los métodos protegidos registrarPieza() y agregarTiempo() para actualizar las piezas procesadas y el tiempo trabajado, así como el método público getNombre() para consultar el nombre de la máquina.
+
+Estos cambios fueron necesarios porque los atributos de Maquina ahora son privados, por lo que no pueden modificarse directamente desde las clases derivadas, así se protege el estado interno de la clase base y se respetan sus invariantes.
 
 
 <br>
@@ -101,11 +103,11 @@ c) ¿Qué tuviste que cambiar en `Torno` y `Fresadora` y por qué?
 
 a) La fresadora acumula 180 s, pero reporta 360 pzas/h. ¿Por qué un cálculo usó 60 s y el otro 10 s?
 
-[Inserta aquí tu respuesta]
+Esto sucede porque el método tiempoCicloSeg() de Fresadora no tiene const, mientras que el método de Maquina sí lo tiene. Por lo tanto, no se sobrescribe correctamente el método de la clase base. Cuando se calcula el tiempo de procesamiento se utiliza el método de Fresadora, que devuelve 60 segundos. sin embargo, cuando se calcula la capacidad desde mostrarEstado(), se utiliza el método de Maquina que devuelve 10 segundos.
 
 b) ¿Tu compilador mostró alguna advertencia antes de usar `override`? ¿Qué mensaje dio después de agregar `override`?
 
-[Inserta aquí tu respuesta]
+Sí el compilador mostró una advertencia indicando que el método tiempoCicloSeg() de Fresadora oculta el método virtual de Maquina. Esto creo que pasa porque las firmas de ambos métodos son diferentes debido a la ausencia de const en Fresadora.
 
 <br>
 
@@ -113,15 +115,15 @@ b) ¿Tu compilador mostró alguna advertencia antes de usar `override`? ¿Qué m
 
 a) ¿Por qué la línea procesó todo como "generico" si `procesar()` ya es virtual?
 
-[Inserta aquí tu respuesta]
+Porque en ControlDeLinea utilizamos std::vector Maquina, que almacena objetos por valor. Al agregar un Torno o una Fresadora, solamente se copia la parte correspondiente a la clase base Maquina, perdiéndose las características específicas de las clases derivadas. A este problema se conoce normalmente como slicing o rebanado de objetos, por esta razon se ejecuta el método genérico de Maquina.
 
 b) ¿Por qué el torno y la fresadora originales quedaron con 0 piezas?
 
-[Inserta aquí tu respuesta]
+Porque el método agregar() guarda copias de las máquinas dentro del vector en lugar de guardar referencias a los objetos originales. Por lo tanto al ejecutar los ciclos se modifican las copias almacenadas en ControlDeLinea, mientras que los objetos originales torno y fresadora permanecen sin cambios.
 
 c) La relación entre `ControlDeLinea` y `Maquina`, ¿es composición o agregación? ¿Por qué?
 
-[Inserta aquí tu respuesta]
+Es una relación de agregación porque ControlDeLinea no crea ni es propietario de las máquinas solamente almacena punteros para utilizarlos. Las máquinas existen independientemente de la línea de producción y no se destruyen cuando esta deja de existir.
 
 <br>
 
