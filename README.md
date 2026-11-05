@@ -8,23 +8,27 @@ Llena cada espacio conforme avances en las fases de [PRACTICA.md](PRACTICA.md).
 
 **1.1 El problema con mis propias palabras**
 
-[Inserta aquí tu respuesta]
+Mi clase maquina del proyecto final del parcial 2 tenia un problema de diseño por que no protegia correctamente sus atributos ya que era posible que otras partes del programa modifiquen sus datos de forma libre ya que no habian restricciones adecuadas que evitaran posibles situaciones que segun lo planeado no deberian pasar por logica pero que si son posibles de ocurrir.
+
+Para poder evitar estos posibles errores es necesario establecer y tomar en cuenta reglas que permitan mantener los datos de cada maquina en un estado valido para evitar errores y de esta forma garantizar que todas las maquinas respeten las condicones bases del funcionamiento del sistema.
 
 **1.2 Reglas que siempre deben cumplirse en una máquina** (escribe al menos tres)
 
-1. _____
-2. _____
-3. _____
+1. Una maquina apagada no puede procesar piezas
+2. Una maquina en falla no puede continuar trabajando
+3. Una maquina solamente puede registarr una pieza conado termina correctamente su proceso.
 
 **1.3 ¿Quién más usa la clase `Maquina`? ¿Qué podría salir mal si otro equipo crea una máquina nueva sin conocer tus reglas?**
 
-[Inserta aquí tu respuesta]
+La clase amquina es utilizada por todas las difrentesmaquinas que heredan de esta clase como por ejemplo torno, fresadora, cortadora y etc. 
+
+Si otro equipo desarrolla una nueva maquina sin conocer las reglas planteadas, podria implemnetar un comportamiento incorrecto como por ejemplo permitir que procese piezas estando apagadas las amquinas, que no registre correctamnete las piezas o que continue trabajando cuando se encuentr en falla, si llega a pasar algunos de estos caos se podrian provocar errores en la linea de produccion y obtener resultadis incorrectos en el reporte final.
 
 ## Fase 2. Diseñar la solución
 
 **2.1 Diagrama inicial (Etapa 0)**
 
-![Diagrama inicial](diseno_inicial.png)
+![Diagrama inicial](Imagenes/diseño_inicial.PNG)
 
 **2.2 Diagrama final (Etapa 9)**
 
@@ -49,11 +53,13 @@ Llena cada espacio conforme avances en las fases de [PRACTICA.md](PRACTICA.md).
 
 a) ¿Qué imprime `ejecutarTurno()` para el torno y la fresadora? ¿Por qué no imprime "torneando" ni "fresando"?
 
-[Inserta aquí tu respuesta]
+Dentro de la funcion ejecutarTurno() no parecen los mensajes especificos por que el metodo procesar() de la clase maquina todavia no esta declarado como virtual por lo que la funcion recibe una referencia del tipo maquina por lo que se ejecuta el metodo de la clase base. Los metodos procesar() de torno y fresadora solamente ocultan el metodo de la clase base, pero todavia no lo sobresriben por polimorfismo.
+
 
 b) ¿Por qué el torno acumula 65 s y no 135 s?
 
-[Inserta aquí tu respuesta]
+El torno termina con 65 segundos por que la primera llamada a processar() ejecuta el metodo de Torno lo que suma al contador 45 segundos, despues cuando se ejecuta ejecutarTurno(), se hacen 2 civlos, como el metodo procesar() de maquinz no es virtual, cada ciclo suma solo 10 segundos.
+
 
 **3.1 Etapa 1. Invariantes y constructores explicit**
 
