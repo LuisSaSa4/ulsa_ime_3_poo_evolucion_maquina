@@ -11,6 +11,8 @@ Maquina::Maquina(const std::string& nombre)
     }
 }
 
+
+
 void Maquina::registrarPieza() {
     piezasProcesadas++;
 }

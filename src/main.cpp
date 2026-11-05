@@ -23,10 +23,6 @@ int main() {
 
     linea.imprimirReporte();
 
-    std::cout << "--- Objetos originales ---\n";
-
-    torno.mostrarEstado();
-    fresadora.mostrarEstado();
 
     return 0;
 }

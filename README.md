@@ -131,17 +131,22 @@ Es una relación de agregación porque ControlDeLinea no crea ni es propietario 
 
 | Momento | Mensajes de destrucción que aparecieron |
 | --- | --- |
-| `delete temporal;` sin destructor virtual | _____ |
-| `delete temporal;` con destructor virtual | _____ |
-| Al terminar `main` (torno y fresadora) | _____ |
+| `delete temporal;` sin destructor virtual | Destruyendo Maquina |
+| `delete temporal;` con destructor virtual | Destruyendo Torno-> Destruyendo Motor-> Destruyendo Maquina |
+| Al terminar `main` (torno y fresadora) | Destruyendo Maquina (Fresadora) → Destruyendo Torno → Destruyendo Motor → Destruyendo Maquina (Torno) |
+
 
 a) ¿Qué advertencia mostró el compilador? ¿Por qué decimos que ya te estaba avisando del problema?
 
-[Inserta aquí tu respuesta]
+deleting object of polymorphic class type 'Maquina' which has non-virtual destructor might cause undefined behavior
+
+El compilador nos avisa que estamos eliminando un objeto Torno mediante un puntero de tipo Maquina*, pero el destructor de Maquina no es virtual. Esto puede provocar un comportamiento indefinido y evitar que se ejecuten correctamente los destructores de la clase derivada y sus componentes.
 
 b) ¿Por qué el torno de `main` sí se destruyó completo aunque el destructor no fuera virtual? ¿A qué máquina corresponde el primer "Destruyendo Maquina" después de "Fin de main"?
 
-[Inserta aquí tu respuesta]
+Porque los objetos locales (torno y fresadora) se destruyen automáticamente utilizando su tipo concreto al terminar main. En cambio, delete temporal utiliza un puntero de tipo Maquina*, por lo que, sin un destructor virtual, no garantiza la destrucción correcta del objeto derivado.
+
+El primer mensaje Destruyendo Maquina después de Fin de main corresponde a la Fresadora, porque fue el último objeto local que se creó y los objetos locales se destruyen en orden inverso al de su creación.
 
 <br>
 
