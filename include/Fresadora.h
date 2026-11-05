@@ -3,6 +3,8 @@
 
 #include "Maquina.h"
 
+namespace planta {
+
 class Fresadora : public Maquina {
 private:
     void ejecutarCiclo() override;
@@ -12,5 +14,6 @@ public:
 
     int tiempoCicloSeg() const override;
 };
+}
 
 #endif

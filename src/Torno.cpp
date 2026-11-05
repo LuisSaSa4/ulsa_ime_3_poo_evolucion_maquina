@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+namespace planta {
 Torno::Torno(const std::string& nombre)
     : Maquina(nombre),
       motor(1200),
@@ -18,4 +19,4 @@ void Torno::ejecutarCiclo() {
 int Torno::tiempoCicloSeg() const {
     return 45;
 }
-
+}

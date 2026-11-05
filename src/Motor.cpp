@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 
+namespace planta {
 Motor::Motor(double velocidadMaxRpm)
     : velocidadMaxRpm(velocidadMaxRpm),
       velocidadActualRpm(0.0) {
@@ -30,4 +31,5 @@ void Motor::fijarVelocidad(double rpm) {
 
 double Motor::getVelocidad() const {
     return velocidadActualRpm;
+}
 }

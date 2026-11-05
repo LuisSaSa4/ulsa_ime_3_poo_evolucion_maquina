@@ -4,6 +4,7 @@
 #include "Maquina.h"
 #include "Motor.h"
 
+namespace planta {
 class Torno : public Maquina {
 private:
     Motor motor;
@@ -18,5 +19,5 @@ public:
     int tiempoCicloSeg() const override;
     
 };
-
+}
 #endif
