@@ -4,6 +4,9 @@ Programación Orientada a Objetos · Ingeniería Mecatrónica · Tercer semestre
 
 Llena cada espacio conforme avances en las fases de [PRACTICA.md](PRACTICA.md).
 
+<br>
+<br>
+
 ## Fase 1. Entender el problema
 
 **1.1 El problema con mis propias palabras**
@@ -12,17 +15,25 @@ Mi clase maquina del proyecto final del parcial 2 tenia un problema de diseño p
 
 Para poder evitar estos posibles errores es necesario establecer y tomar en cuenta reglas que permitan mantener los datos de cada maquina en un estado valido para evitar errores y de esta forma garantizar que todas las maquinas respeten las condicones bases del funcionamiento del sistema.
 
+<br>
+
 **1.2 Reglas que siempre deben cumplirse en una máquina** (escribe al menos tres)
 
-1. Una maquina apagada no puede procesar piezas
-2. Una maquina en falla no puede continuar trabajando
-3. Una maquina solamente puede registarr una pieza conado termina correctamente su proceso.
+1. Las piezas procesadas nunca deben de ser negativas.
+2. El tiempo trabajado no puede ser negativo.
+3. El nombre de la maquina no debe estar vacio.
+
+<br>
 
 **1.3 ¿Quién más usa la clase `Maquina`? ¿Qué podría salir mal si otro equipo crea una máquina nueva sin conocer tus reglas?**
 
-La clase amquina es utilizada por todas las difrentesmaquinas que heredan de esta clase como por ejemplo torno, fresadora, cortadora y etc. 
 
-Si otro equipo desarrolla una nueva maquina sin conocer las reglas planteadas, podria implemnetar un comportamiento incorrecto como por ejemplo permitir que procese piezas estando apagadas las amquinas, que no registre correctamnete las piezas o que continue trabajando cuando se encuentr en falla, si llega a pasar algunos de estos caos se podrian provocar errores en la linea de produccion y obtener resultadis incorrectos en el reporte final.
+La clase maquina es utilizada por todas las diferentes maquinas que heredan de esta clase como por ejemplo torno, fresadora, cortadora y etc. 
+
+Si otro equipo desarrolla una nueva maquina sin conocer las reglas planteadas, podria implemnetar un comportamiento incorrecto como por ejemplo permitir que procese piezas estando apagadas las maquinas, que no registre correctamnete las piezas o que continue trabajando cuando se encuentr en falla, si llega a pasar algunos de estos caos se podrian provocar errores en la linea de produccion y obtener resultadis incorrectos en el reporte final.
+
+<br>
+<br>
 
 ## Fase 2. Diseñar la solución
 
@@ -30,9 +41,13 @@ Si otro equipo desarrolla una nueva maquina sin conocer las reglas planteadas, p
 
 ![Diagrama inicial](Imagenes/diseño_inicial.PNG)
 
+<br>
+
 **2.2 Diagrama final (Etapa 9)**
 
 ![Diagrama final](diseno_solucion.png)
+
+<br>
 
 **2.3 ¿Qué cambió entre los dos diagramas?**
 
@@ -47,6 +62,9 @@ Si otro equipo desarrolla una nueva maquina sin conocer las reglas planteadas, p
 | Relación `Torno` - `Motor` | _____ | _____ | _____ |
 | Relación `BandaTransportadora` - `Motor` | _____ | _____ | _____ |
 
+<br>
+<br>
+
 ## Fase 3. Implementar
 
 **3.0 Etapa 0. Una máquina sin reglas**
@@ -58,22 +76,26 @@ Dentro de la funcion ejecutarTurno() no parecen los mensajes especificos por que
 
 b) ¿Por qué el torno acumula 65 s y no 135 s?
 
-El torno termina con 65 segundos por que la primera llamada a processar() ejecuta el metodo de Torno lo que suma al contador 45 segundos, despues cuando se ejecuta ejecutarTurno(), se hacen 2 civlos, como el metodo procesar() de maquinz no es virtual, cada ciclo suma solo 10 segundos.
+El torno termina con 65 segundos por que la primera llamada a processar() ejecuta el metodo de Torno lo que suma al contador 45 segundos, despues cuando se ejecuta ejecutarTurno(), se hacen 2 ciclos, como el metodo procesar() de maquina no es virtual, cada ciclo suma solo 10 segundos.
 
+<br>
 
 **3.1 Etapa 1. Invariantes y constructores explicit**
 
 a) ¿Qué regla de la sección 1.2 rompió `torno.piezasProcesadas = -5;`?
 
-[Inserta aquí tu respuesta]
+Rompio la regla de que el numero de piezas procesadas nunca debe de ser negativo. Al cambiar directamente el atributo, se permitio que la maquina tuviera un estado invalido y no coherente.
 
 b) ¿De dónde salió la máquina "Fantasma"? ¿Qué hizo el compilador sin que se lo pidieras?
 
-[Inserta aquí tu respuesta]
+La máquina se creó automáticamente mediante una conversión implícita. Como el constructor Maquina(const std::string& nombre) no tiene la palabra explicit, C++ convirtió el std::string "Fantasma" en un objeto temporal de tipo Maquina para poder llamar a imprimirFicha().
 
 c) ¿Qué tuviste que cambiar en `Torno` y `Fresadora` y por qué?
 
 [Inserta aquí tu respuesta]
+
+
+<br>
 
 **3.2 Etapa 2. Virtual y override**
 
@@ -84,6 +106,8 @@ a) La fresadora acumula 180 s, pero reporta 360 pzas/h. ¿Por qué un cálculo u
 b) ¿Tu compilador mostró alguna advertencia antes de usar `override`? ¿Qué mensaje dio después de agregar `override`?
 
 [Inserta aquí tu respuesta]
+
+<br>
 
 **3.3 Etapa 3. La línea de producción**
 
@@ -98,6 +122,8 @@ b) ¿Por qué el torno y la fresadora originales quedaron con 0 piezas?
 c) La relación entre `ControlDeLinea` y `Maquina`, ¿es composición o agregación? ¿Por qué?
 
 [Inserta aquí tu respuesta]
+
+<br>
 
 **3.4 Etapa 4. Destructores**
 
@@ -115,6 +141,8 @@ b) ¿Por qué el torno de `main` sí se destruyó completo aunque el destructor 
 
 [Inserta aquí tu respuesta]
 
+<br>
+
 **3.5 Etapa 5. La clase abstracta**
 
 a) Copia los mensajes de error y explica con tus palabras qué dice cada uno.
@@ -124,6 +152,8 @@ a) Copia los mensajes de error y explica con tus palabras qué dice cada uno.
 b) ¿Por qué es mejor este error de compilación que el comportamiento "generico" de antes?
 
 [Inserta aquí tu respuesta]
+
+<br>
 
 **3.6 Etapa 6. El contrato que el compilador no ve**
 
@@ -139,6 +169,8 @@ c) ¿Qué pasaría si el próximo equipo tampoco lee el comentario del contrato?
 
 [Inserta aquí tu respuesta]
 
+<br>
+
 **3.7 Etapa 7. La base hace cumplir el contrato**
 
 a) ¿Cómo puede una clase derivada sobrescribir un método que es privado en la base?
@@ -153,6 +185,8 @@ c) ¿Por qué la línea ignoró el "atajo" del torno, pero la llamada directa no
 
 [Inserta aquí tu respuesta]
 
+<br>
+
 **3.8 Etapa 8. Herencia mal usada**
 
 a) Da al menos dos razones por las que `BandaTransportadora : public Motor` es un error de diseño.
@@ -162,6 +196,8 @@ a) Da al menos dos razones por las que `BandaTransportadora : public Motor` es u
 b) La relación entre `BandaTransportadora` y `Motor`, ¿es composición o agregación? ¿Por qué?
 
 [Inserta aquí tu respuesta]
+
+<br>
 
 **3.9 Etapa 9. La librería y la prueba final**
 
@@ -173,6 +209,8 @@ b) ¿Qué pasó al escribir `-lplanta` antes de `src/main.cpp`? ¿Por qué?
 
 [Inserta aquí tu respuesta]
 
+<br>
+
 **3.10 Bitácora de dudas**
 
 | # | Etapa | Duda | Cómo la resolví | Fuente |
@@ -180,6 +218,9 @@ b) ¿Qué pasó al escribir `-lplanta` antes de `src/main.cpp`? ¿Por qué?
 | 1 | _____ | _____ | _____ | _____ |
 | 2 | _____ | _____ | _____ | _____ |
 | 3 | _____ | _____ | _____ | _____ |
+
+<br>
+<br>
 
 ## Fase 4. Probar y mejorar
 
@@ -206,11 +247,17 @@ b) ¿Qué pasó al escribir `-lplanta` antes de `src/main.cpp`? ¿Por qué?
 
 Retos opcionales que intenté: _____
 
+<br>
+<br>
+
 ## Fase 5. Publicar en GitHub
 
 **5.1 Enlace a mi fork**
 
 [Inserta aquí el enlace a tu fork]
+
+<br>
+<br>
 
 ## Cierre y reflexión
 
