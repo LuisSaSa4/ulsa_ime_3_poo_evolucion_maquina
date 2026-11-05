@@ -7,7 +7,10 @@ class Torno : public Maquina {
 public:
     explicit Torno(const std::string& nombre);
 
-    void procesar();
+    void procesar() override;
+    int tiempoCicloSeg() const override;
+
+
 };
 
 #endif
