@@ -206,11 +206,15 @@ La línea utiliza punteros de tipo Maquina* para trabajar con las máquinas y ll
 
 a) Da al menos dos razones por las que `BandaTransportadora : public Motor` es un error de diseño.
 
-[Inserta aquí tu respuesta]
+1. La banda no es un motor. La herencia representa una relación de tipo «es un». Una banda transportadora no puede considerarse un motor; simplemente utiliza uno para funcionar. Por eso, heredar de Motor representa incorrectamente la relación entre ambas clases.
+
+2. La banda deja de ser una Maquina. Como hereda de Motor y no de Maquina, no puede agregarse a ControlDeLinea, cuyo método agregar() recibe objetos de tipo Maquina*. Esto provoca el error de compilación que observamos.
+
+3. Se permite modificar directamente la velocidad del motor. Al heredar de Motor, la banda obtiene acceso a métodos como fijarVelocidad(). Esto permite que otras partes del programa cambien su velocidad directamente, sin que la propia banda controle ese comportamiento.
 
 b) La relación entre `BandaTransportadora` y `Motor`, ¿es composición o agregación? ¿Por qué?
 
-[Inserta aquí tu respuesta]
+La relación es de composición, porque la banda transportadora tiene un motor como parte de su estructura y lo utiliza para funcionar. El motor es un componente interno de la banda, por lo que su funcionamiento depende de este componente. No se trata de una relación de herencia, porque una banda no es un motor, sino que tiene uno.
 
 <br>
 
