@@ -2,15 +2,15 @@
 
 #include <iostream>
 
-Fresadora::Fresadora(const std::string& nombre) : Maquina(nombre) {}
-
-void Fresadora::procesar() {
-    std::cout << getNombre() << ": fresando pieza\n";
-
-    registrarPieza();
-    agregarTiempo(tiempoCicloSeg());
+Fresadora::Fresadora(const std::string& nombre)
+    : Maquina(nombre) {
 }
 
-int Fresadora::tiempoCicloSeg() const{
+void Fresadora::ejecutarCiclo() {
+    std::cout << getNombre()
+              << ": fresando pieza\n";
+}
+
+int Fresadora::tiempoCicloSeg() const {
     return 60;
 }

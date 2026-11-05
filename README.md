@@ -190,15 +190,15 @@ Podría cometer el mismo error al crear otra máquina, porque el comentario no o
 
 a) ¿Cómo puede una clase derivada sobrescribir un método que es privado en la base?
 
-[Inserta aquí tu respuesta]
+Una clase derivada puede sobrescribir un método privado de la clase base porque en C++ el control de acceso (private) y la sobrescritura (virtual) son independientes. La palabra private impide que otras clases llamen directamente al método, mientras que virtual permite que una clase derivada proporcione su propia implementación. Por eso, las clases derivadas pueden sobrescribir ejecutarCiclo(), aunque no puedan llamarlo directamente.
 
 b) ¿Qué ocurre ahora con una máquina cuyo tiempo de ciclo es 0? Compáralo con la Etapa 6.
 
-[Inserta aquí tu respuesta]
+En la Etapa 6, cuando una máquina devolvía un tiempo de ciclo igual a cero, se podía producir un resultado incorrecto en el reporte, mostrando una capacidad infinita (inf). En la Etapa 7, la clase base valida que el tiempo sea mayor que cero antes de ejecutar el ciclo. Si el tiempo es inválido, lanza una excepción std::logic_error, que muestra un mensaje indicando qué máquina incumplió el contrato. De esta manera se evita registrar información incorrecta.
 
 c) ¿Por qué la línea ignoró el "atajo" del torno, pero la llamada directa no? ¿Cómo corregiste el diseño?
 
-[Inserta aquí tu respuesta]
+La línea utiliza punteros de tipo Maquina* para trabajar con las máquinas y llama al método procesar() de la clase base. Como este método no es virtual, la línea ejecuta siempre la implementación de Maquina. En cambio, cuando se llama directamente a torno.procesar(), se ejecuta el método propio de Torno, porque oculta al método de la clase base. Para corregir el diseño, eliminé el método procesar() de Torno, dejando que únicamente la clase base controle el procesamiento y que las clases derivadas personalicen el trabajo mediante ejecutarCiclo().
 
 <br>
 

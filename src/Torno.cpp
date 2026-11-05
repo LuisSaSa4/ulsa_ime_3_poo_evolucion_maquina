@@ -1,26 +1,21 @@
-
 #include "Torno.h"
 
 #include <iostream>
 
 Torno::Torno(const std::string& nombre)
     : Maquina(nombre),
-      husillo(3000.0) {
+      motor(1200),
+      velocidadRPM(1200) {
+    motor.fijarVelocidad(velocidadRPM);
 }
 
-
-void Torno::procesar() {
-    husillo.fijarVelocidad(1200.0);
-
+void Torno::ejecutarCiclo() {
     std::cout << getNombre()
               << ": torneando pieza a "
-              << husillo.getVelocidad()
-              << " rpm\n";
-
-    registrarPieza();
-    agregarTiempo(tiempoCicloSeg());
+              << motor.getVelocidad() << " rpm\n";
 }
 
 int Torno::tiempoCicloSeg() const {
     return 45;
 }
+
