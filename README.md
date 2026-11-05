@@ -174,15 +174,15 @@ Es mejor que ocurra un error de compilación porque nos permite detectar desde e
 
 a) ¿Qué partes del contrato violó `InspeccionVisual`?
 
-[Inserta aquí tu respuesta]
+La clase InspeccionVisual no cumple con el contrato porque su método procesar() no registra las piezas ni suma el tiempo que tarda en procesarlas. Además, el método tiempoCicloSeg() devuelve 0, cuando debería devolver un valor mayor que cero.
 
 b) ¿Por qué el compilador no lo detectó?
 
-[Inserta aquí tu respuesta]
+Porque el compilador solamente revisa que los métodos estén declarados correctamente y que coincidan con los de la clase base. No puede saber si realmente hacen lo que deberían hacer cuando se ejecutan.
 
 c) ¿Qué pasaría si el próximo equipo tampoco lee el comentario del contrato?
 
-[Inserta aquí tu respuesta]
+Podría cometer el mismo error al crear otra máquina, porque el comentario no obliga a cumplir con esas reglas. El programa podría compilar y funcionar, pero dar resultados incorrectos en los reportes, como pasó con InspeccionVisual.
 
 <br>
 
