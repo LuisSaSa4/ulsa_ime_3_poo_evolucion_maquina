@@ -45,7 +45,7 @@ Si otro equipo desarrolla una nueva maquina sin conocer las reglas planteadas, p
 
 **2.2 Diagrama final (Etapa 9)**
 
-![Diagrama final](diseno_solucion.png)
+![Diagrama final](Imagenes/diseno_solucion.png)
 
 <br>
 
@@ -53,14 +53,14 @@ Si otro equipo desarrolla una nueva maquina sin conocer las reglas planteadas, p
 
 | Elemento | Etapa 0 | Etapa 9 | Etapa que lo cambió |
 | --- | --- | --- | --- |
-| Visibilidad de los atributos de `Maquina` | _____ | _____ | _____ |
-| `procesar()` | _____ | _____ | _____ |
-| `tiempoCicloSeg()` | _____ | _____ | _____ |
-| Destructor de `Maquina` | _____ | _____ | _____ |
-| ¿Se pueden crear objetos `Maquina`? | _____ | _____ | _____ |
-| Relación `ControlDeLinea` - `Maquina` | _____ | _____ | _____ |
-| Relación `Torno` - `Motor` | _____ | _____ | _____ |
-| Relación `BandaTransportadora` - `Motor` | _____ | _____ | _____ |
+| Visibilidad de los atributos de `Maquina` | Publicos(public) | Provados(private) | Etapa 1 |
+| `procesar()` | Publico y no virtual | Público y no virtual; la clase base controla el ciclo mediante NVI | Etapa 7 |
+| `tiempoCicloSeg()` | No existia | Publico y virtual puro(=0) | Etapa 5 |
+| Destructor de `Maquina` | ¿No tenia un destructor virtual declarado | Destructor virtual (virtual ~Maquina() = default) | Etapa 4 |
+| ¿Se pueden crear objetos `Maquina`? | Sí, era una clase concreta | No, es una clase abstracta | Etapa 5 |
+| Relación `ControlDeLinea` - `Maquina` | No existía ControlDeLinea; se utilizaba una función con Maquina& | Agregación mediante vector<Maquina*> | Etapa 3 |
+| Relación `Torno` - `Motor` | No existia | Composición: Torno contiene un objeto Motor | Etapa 4 |
+| Relación `BandaTransportadora` - `Motor` | No exixtia | Composición: BandaTransportadora contiene un objeto Motor | Etapa 8 |
 
 <br>
 <br>
@@ -222,11 +222,11 @@ La relación es de composición, porque la banda transportadora tiene un motor c
 
 a) Después de agregar la `Cortadora`, ¿qué archivos mostró `git status`? ¿Cuántos archivos de la librería tuviste que modificar?
 
-[Inserta aquí tu respuesta]
+La biblioteca estática contiene los archivos objeto de las máquinas y sus componentes. Para agregar una máquina nueva sin modificar la biblioteca, solamente es necesario crear su archivo .h y .cpp, además de actualizar main.cpp. No es necesario modificar los archivos originales de la biblioteca.
 
 b) ¿Qué pasó al escribir `-lplanta` antes de `src/main.cpp`? ¿Por qué?
 
-[Inserta aquí tu respuesta]
+El enlazador mostró errores undefined reference porque la biblioteca se colocó antes del archivo principal. El enlazador procesa los archivos en orden y, cuando revisó la biblioteca, todavía no conocía las referencias que necesitaba resolver. Al colocar src/main.cpp antes de -lplanta, el enlazado se realizó correctamente.
 
 <br>
 
@@ -234,9 +234,9 @@ b) ¿Qué pasó al escribir `-lplanta` antes de `src/main.cpp`? ¿Por qué?
 
 | # | Etapa | Duda | Cómo la resolví | Fuente |
 | --- | --- | --- | --- | --- |
-| 1 | _____ | _____ | _____ | _____ |
-| 2 | _____ | _____ | _____ | _____ |
-| 3 | _____ | _____ | _____ | _____ |
+| 1 | Etapa 2 | No entendía bien para qué servían virtual y override, ni cuál era la diferencia entre los dos. | Investigando y haciendo pruebas entendí que virtual permite que se ejecute el método correspondiente a la clase hija, mientras que override sirve para indicar que estoy sobrescribiendo un método de la clase base y ayuda a detectar errores. | PRACTICA.md y pruebas del código. |
+| 2 | Etapa 3 | Tenía la duda de por qué se utilizaban punteros Maquina* en el vector de ControlDeLinea en lugar de guardar directamente los objetos. | Comprendí que de esta manera puedo agregar diferentes tipos de máquinas a una misma línea sin perder su comportamiento original. También entendí que la línea solamente utiliza las máquinas, pero no es la encargada de crearlas o destruirlas. | PRACTICA.md y ControlDeLinea.h. |
+| 3 | Etapa 7 | No me quedaba claro cómo hacer que todas las máquinas registraran correctamente las piezas procesadas y el tiempo trabajado sin repetir ese código en cada clase. | Lo resolví utilizando el método procesar() en la clase base. Así, la clase Maquina se encarga de controlar el proceso y las clases hijas solamente implementan su propio ciclo de trabajo. | PRACTICA.md y Maquina.h / Maquina.cpp. |
 
 <br>
 <br>
@@ -247,25 +247,29 @@ b) ¿Qué pasó al escribir `-lplanta` antes de `src/main.cpp`? ¿Por qué?
 
 | # | Caso | Resultado esperado | Resultado obtenido | ¿Pasa? |
 | --- | --- | --- | --- | --- |
-| 1 | Máquina con nombre vacío | Excepción con mensaje claro | _____ | _____ |
-| 2 | Reporte de una línea vacía | "La linea no tiene maquinas" | _____ | _____ |
-| 3 | `agregar(nullptr)` | Devuelve `false` | _____ | _____ |
-| 4 | Reporte antes de ejecutar el turno | 0 piezas, 0 s y capacidad calculada | _____ | _____ |
-| 5 | Turno de 0 ciclos | Nada cambia | _____ | _____ |
-| 6 | Torno con 3 ciclos | 3 piezas, 135 s, 80 pzas/h | _____ | _____ |
-| 7 | Máquina con `tiempoCicloSeg()` igual a 0 | Excepción con mensaje claro | _____ | _____ |
-| 8 | Máquina con `tiempoCicloSeg()` negativo | Excepción con mensaje claro | _____ | _____ |
-| 9 | La misma máquina agregada dos veces | _____ | _____ | _____ |
+| 1 | Máquina con nombre vacío | Excepción con mensaje claro | Se permitió crear la máquina sin nombre y apareció el mensaje de error de la prueba. | No |
+| 2 | Reporte de una línea vacía | "La linea no tiene maquinas" | Apareció el mensaje «La linea no tiene maquinas». | Si |
+| 3 | `agregar(nullptr)` | Devuelve `false` | No permitió agregar nullptr y devolvió false. | Si |
+| 4 | Reporte antes de ejecutar el turno | 0 piezas, 0 s y capacidad calculada | Mostró 0 piezas, 0 segundos y 80 pzas/h para el torno. | Si |
+| 5 | Turno de 0 ciclos | Nada cambia | La máquina permaneció con 0 piezas y 0 segundos trabajados. | Si |
+| 6 | Torno con 3 ciclos | 3 piezas, 135 s, 80 pzas/h | Procesó 3 piezas, acumuló 135 segundos y mostró 80 pzas/h. | Si |
+| 7 | Máquina con `tiempoCicloSeg()` igual a 0 | Excepción con mensaje claro | Se lanzó una excepción indicando que el tiempo debe ser mayor que cero. | Si |
+| 8 | Máquina con `tiempoCicloSeg()` negativo | Excepción con mensaje claro | Se lanzó una excepción indicando que el tiempo debe ser mayor que cero. | Si |
+| 9 | La misma máquina agregada dos veces | Evitar que una máquina se registre más de una vez. | Permitió agregarla dos veces y procesó dos veces el mismo torno. | No |
 
 **4.2 Bitácora de mejoras**
 
 | # | Falla o mejora detectada | Qué cambié | Por qué |
 | --- | --- | --- | --- |
-| 1 | _____ | _____ | _____ |
-| 2 | _____ | _____ | _____ |
+| 1 | Se permitió agregar la misma máquina dos veces a la línea de producción. | Se identificó que sería necesario validar si la máquina ya está registrada antes de agregarla. |  Para evitar que una misma máquina procese piezas más veces de las solicitadas y que el reporte cuente información duplicada.|
+| 2 | El constructor permite crear máquinas con nombres vacíos. | Se propone agregar una validación para rechazar nombres vacíos al crear una máquina. | Para evitar que existan máquinas sin identificación y facilitar su control dentro de la línea de producción. |
 
-Retos opcionales que intenté: _____
+Retos opcionales que intenté: 
+<br>
 
+Validar el nombre de las máquinas: Probé crear una máquina con el nombre vacío y descubrí que el programa permite hacerlo. Identifiqué que sería necesario agregar una validación en el constructor de Maquina.
+
+Evitar máquinas duplicadas: Probé agregar dos veces el mismo torno a ControlDeLinea. El programa permitió hacerlo y terminó procesando dos veces la misma máquina. Con esto identifiqué que sería conveniente validar que una máquina no esté registrada anteriormente.
 <br>
 <br>
 
@@ -273,7 +277,7 @@ Retos opcionales que intenté: _____
 
 **5.1 Enlace a mi fork**
 
-[Inserta aquí el enlace a tu fork]
+https://github.com/LuisSaSa4/ulsa_ime_3_poo_evolucion_maquina.git
 
 <br>
 <br>
@@ -284,23 +288,23 @@ Retos opcionales que intenté: _____
 
 | Error | Etapa en que apareció | Restricción que lo impide ahora | ¿Quién lo detecta: el compilador o el programa? |
 | --- | --- | --- | --- |
-| Contadores con valores inválidos | _____ | _____ | _____ |
-| Máquina "fantasma" creada a escondidas | _____ | _____ | _____ |
-| Método que no sobrescribe por un `const` | _____ | _____ | _____ |
-| Máquinas copiadas y "rebanadas" | _____ | _____ | _____ |
-| Destrucción incompleta | _____ | _____ | _____ |
-| Máquina sin `procesar()` propio | _____ | _____ | _____ |
-| Tiempo de ciclo inválido | _____ | _____ | _____ |
-| Derivada que no registra sus piezas | _____ | _____ | _____ |
+| Contadores con valores inválidos | Estapa 1 | Los atributos son privados y se inicializan desde el constructor | El programa |
+| Máquina "fantasma" creada a escondidas | Etapa 1 | Se controla la creación de objetos mediante el constructor y la visibilidad de los atributos | El programa |
+| Método que no sobrescribe por un `const` | Etapa 2 | Se utiliza override para comprobar que el método sobrescriba correctamente al de la clase base. | Elcompilador |
+| Máquinas copiadas y "rebanadas" | Etapa 3 | Se utilizan punteros Maquina* en el vector de ControlDeLinea, en lugar de guardar objetos por valor | El diseño del programa |
+| Destrucción incompleta | Etapa 4 |  Se utiliza un destructor virtual en la clase base Maquina.| El comportamiento del programa |
+| Máquina sin `procesar()` propio | Etapa 5 |  Maquina es abstracta y obliga a implementar los métodos virtuales puros.| El compilador |
+| Tiempo de ciclo inválido | Etapa 7 |  El método procesar() valida que el tiempo sea mayor que cero| El programa |
+| Derivada que no registra sus piezas | Etapa 7 |  Se utiliza NVI: la clase base controla procesar() y las derivadas implementan ejecutarCiclo().| El diseño de la clase base |
 
 **6.2 ¿Cuál de los errores fue el más peligroso: el de compilación, la advertencia o el que compilaba sin problemas? ¿Por qué?**
 
-[Inserta aquí tu respuesta]
+Considero que los errores más peligrosos son los que permiten que el programa compile sin mostrar ningún problema, porque pueden pasar desapercibidos y provocar resultados incorrectos durante la ejecución. Por ejemplo, al probar agregar dos veces el mismo torno, el programa compiló correctamente, pero terminó procesando dos veces la misma máquina. Esto me hizo entender que no basta con que el código compile, también es necesario probar que funcione como esperamos.
 
 **6.3 ¿Qué aprendiste en esta práctica?**
 
-[Inserta aquí tu respuesta]
+Durante esta práctica aprendí a utilizar mejor la programación orientada a objetos en C++. Entendí la importancia de la herencia, el polimorfismo, la encapsulación y la composición. También aprendí para qué sirven los métodos virtuales, el uso de override y los destructores virtuales. Algo que me pareció importante fue aprender cómo una clase base puede controlar el comportamiento de sus clases derivadas mediante el patrón NVI. Además, comprendí que las pruebas ayudan a encontrar errores que no siempre aparecen al compilar.
 
 **6.4 ¿Qué cambiarías de tu proceso la próxima vez?**
 
-[Inserta aquí tu respuesta]
+La próxima vez trataría de organizar mejor el trabajo desde el principio, empezando por revisar los requisitos y diseñar el diagrama UML antes de comenzar a programar. También intentaría hacer pruebas más seguido, en lugar de esperar hasta tener todo terminado. Otra cosa que cambiaría sería documentar las dudas y los errores conforme vayan apareciendo, para tener un mejor control de los cambios realizados y evitar problemas al integrar las diferentes clases.

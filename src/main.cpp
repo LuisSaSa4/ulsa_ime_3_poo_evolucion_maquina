@@ -1,3 +1,4 @@
+
 #include "ControlDeLinea.h"
 #include "Torno.h"
 #include "Fresadora.h"
@@ -10,6 +11,8 @@
 #include <exception>
 
 int main() {
+
+   
     try {
         planta::Torno torno("Torno T-01");
         planta::Fresadora fresadora("Fresadora F-01");
@@ -30,7 +33,6 @@ int main() {
         linea.ejecutarTurno(2);
 
         linea.imprimirReporte();
-
     }
     catch (const std::exception& e) {
         std::cout << "Error: " << e.what() << '\n';
